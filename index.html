@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Purely Plated Recipes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       COLOURS & VARIABLES
+       ============================================= */
+    :root {
+      --cream:    #faf6f0;
+      --parchment:#f0e9dc;
+      --bark:     #c8a882;
+      --olive:    #4a5c3a;
+      --sage:     #7a9268;
+      --terracotta:#c0623a;
+      --ink:      #2b2218;
+      --mist:     #e8e2d8;
+      --white:    #ffffff;
+
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Jost', sans-serif;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(43,34,24,0.10);
+      --shadow-hover: 0 12px 40px rgba(43,34,24,0.18);
+    }
+
+    /* =============================================
+       RESET & BASE
+       ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* =============================================
+       HEADER
+       ============================================= */
+    header {
+      background: var(--olive);
+      padding: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(43,34,24,0.25);
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .logo {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+    .logo-main {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--cream);
+      letter-spacing: 0.02em;
+    }
+    .logo-sub {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: var(--bark);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .header-tagline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--bark);
+      display: none;
+    }
+    @media(min-width:680px){ .header-tagline { display: block; } }
+
+    /* =============================================
+       HERO STRIP
+       ============================================= */
+    .hero {
+      background: linear-gradient(135deg, var(--parchment) 0%, var(--mist) 100%);
+      padding: 64px 32px 52px;
+      text-align: center;
+      border-bottom: 2px solid var(--bark);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(122,146,104,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(192,98,58,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--olive);
+    }
+    .hero p {
+      font-size: 1rem;
+      font-weight: 300;
+      color: #6b5e4e;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .leaf-divider {
+      margin: 20px auto 0;
+      color: var(--bark);
+      font-size: 1.2rem;
+      letter-spacing: 8px;
+    }
+
+    /* =============================================
+       FILTER TABS
+       ============================================= */
+    .filter-section {
+      background: var(--white);
+      border-bottom: 1px solid var(--mist);
+      padding: 0 32px;
+      position: sticky;
+      top: 73px;
+      z-index: 90;
+      box-shadow: 0 2px 12px rgba(43,34,24,0.06);
+    }
+    .filter-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      padding: 16px 0;
+      scrollbar-width: none;
+    }
+    .filter-inner::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      flex-shrink: 0;
+      border: 1.5px solid var(--mist);
+      background: transparent;
+      color: #7a6e62;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .filter-btn:hover {
+      border-color: var(--sage);
+      color: var(--olive);
+      background: rgba(122,146,104,0.08);
+    }
+    .filter-btn.active {
+      background: var(--olive);
+      border-color: var(--olive);
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    /* =============================================
+       RESULTS COUNT
+       ============================================= */
+    .results-bar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 32px 8px;
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: #9a8e82;
+      letter-spacing: 0.05em;
+    }
+
+    /* =============================================
+       RECIPE GRID
+       ============================================= */
+    .grid-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8px 32px 80px;
+    }
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    /* =============================================
+       RECIPE CARD
+       ============================================= */
+    .recipe-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.28s ease, box-shadow 0.28s ease, opacity 0.28s ease;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+    }
+    .recipe-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+    .recipe-card.hidden {
+      display: none;
+    }
+    .recipe-card.fade-in {
+      animation: fadeUp 0.35s ease forwards;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    /* Card image */
+    .card-img-wrap {
+      position: relative;
+      padding-top: 62%;
+      overflow: hidden;
+      background: var(--parchment);
+    }
+    .card-img-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .recipe-card:hover .card-img-wrap img {
+      transform: scale(1.05);
+    }
+    .card-img-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: var(--bark);
+    }
+
+    /* Card body */
+    .card-body {
+      padding: 20px 20px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+    .card-source {
+      font-size: 0.72rem;
+      color: var(--bark);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    /* Tags */
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+    .tag {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 50px;
+      background: var(--parchment);
+      color: var(--olive);
+      border: 1px solid var(--mist);
+    }
+
+    /* View arrow */
+    .card-cta {
+      margin: 4px 20px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      transition: gap 0.2s;
+    }
+    .recipe-card:hover .card-cta { gap: 10px; }
+    .card-cta::after { content: '→'; }
+
+    /* =============================================
+       EMPTY STATE
+       ============================================= */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 20px;
+      display: none;
+    }
+    .empty-state.visible { display: block; }
+    .empty-state-icon { font-size: 3rem; margin-bottom: 16px; }
+    .empty-state h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 300;
+      margin-bottom: 8px;
+    }
+    .empty-state p { color: #9a8e82; font-size: 0.9rem; }
+
+    /* =============================================
+       FOOTER
+       ============================================= */
+    footer {
+      background: var(--ink);
+      color: var(--bark);
+      text-align: center;
+      padding: 32px;
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+    }
+    footer strong { color: var(--cream); font-weight: 400; }
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+    @media(max-width: 600px) {
+      .header-inner { padding: 14px 20px; }
+      .logo-main { font-size: 1.5rem; }
+      .hero { padding: 44px 20px 36px; }
+      .filter-section { padding: 0 20px; }
+      .results-bar, .grid-section { padding-left: 20px; padding-right: 20px; }
+      .recipe-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    }
+    @media(max-width: 420px) {
+      .recipe-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-main">Purely Plated</span>
+        <span class="logo-sub">Recipes &amp; Dietary Guides</span>
+      </div>
+      <span class="header-tagline">Recipes for every table.</span>
+    </div>
+  </header>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero">
+    <p class="hero-eyebrow">A curated collection</p>
+    <h1>Cooking for <em>everyone</em></h1>
+    <p>Discover delicious recipes tailored to your dietary needs — from vegan feasts to nut-free treats and everything in between.</p>
+    <div class="leaf-divider">✦ ✦ ✦</div>
+  </section>
+
+  <!-- ==================== FILTER TABS ==================== -->
+  <div class="filter-section">
+    <div class="filter-inner" id="filterBar">
+      <!-- Tabs generated by JS -->
+    </div>
+  </div>
+
+  <!-- ==================== RESULTS BAR ==================== -->
+  <div class="results-bar" id="resultsBar"></div>
+
+  <!-- ==================== RECIPE GRID ==================== -->
+  <section class="grid-section">
+    <div class="recipe-grid" id="recipeGrid">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-state-icon">🌿</div>
+        <h3>No recipes found</h3>
+        <p>Try selecting a different category.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer>
+    <p>Made with love by <strong>Purely Plated Recipes</strong> &nbsp;·&nbsp; A curated portfolio of the web's finest dishes.</p>
+  </footer>
+
+  <script>
+    /* =================================================================
+       ✏️  HOW TO ADD A RECIPE — read this first!
+       =================================================================
+
+       Each recipe is one object inside the RECIPES array below.
+       Copy & paste one of the existing blocks and change the values.
+
+       Fields:
+         title   – the name of the recipe (text)
+         url     – the link to the real recipe on the web
+         image   – a direct link to a photo (right-click any image
+                   on a website → "Copy image address"). If you
+                   leave it empty ("") a leaf placeholder appears.
+         source  – the website name, e.g. "BBC Good Food"
+         tags    – one or more dietary tags from the list below.
+                   Use EXACTLY these spellings (case-insensitive):
+                   "Vegan", "Vegetarian", "Dairy-Free", "Gluten-Free",
+                   "Nut-Free", "Halal", "Low-Carb", "Paleo"
+                   You can add your own tags — they will appear
+                   automatically as new filter buttons!
+
+       ================================================================= */
+
+    const RECIPES = [
+      {
+        title: "Golden Lentil & Coconut Soup",
+        url: "https://www.bbcgoodfood.com/recipes/golden-lentil-coconut-soup",
+        image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600&q=80",
+        source: "BBC Good Food",
+        tags: ["Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free"]
+      },
+      {
+        title: "Crispy Chickpea Buddha Bowl",
+        url: "https://minimalistbaker.com/crispy-chickpea-buddha-bowl/",
+        image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80",
+        source: "Minimalist Baker",
+        tags: ["Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free"]
+      },
+      {
+        title: "Mushroom & Spinach Risotto",
+        url: "https://www.bbcgoodfood.com/recipes/mushroom-spinach-risotto",
+        image: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=600&q=80",
+        source: "BBC Good Food",
+        tags: ["Vegetarian", "Gluten-Free"]
+      },
+      {
+        title: "Almond-Free Pesto Pasta",
+        url: "https://www.seriouseats.com/recipes/pesto-pasta-nut-free",
+        image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&q=80",
+        source: "Serious Eats",
+        tags: ["Vegetarian", "Nut-Free"]
+      },
+      {
+        title: "Halal Chicken Shawarma Wraps",
+        url: "https://www.delish.com/cooking/recipes/a23452036/chicken-shawarma-recipe/",
+        image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80",
+        source: "Delish",
+        tags: ["Halal", "Dairy-Free", "Nut-Free"]
+      },
+      {
+        title: "Creamy Oat & Berry Overnight Oats",
+        url: "https://minimalistbaker.com/overnight-oats/",
+        image: "https://images.unsplash.com/photo-1517093728432-a0440f8d45af?w=600&q=80",
+        source: "Minimalist Baker",
+        tags: ["Vegan", "Dairy-Free", "Nut-Free"]
+      },
+      {
+        title: "Sweet Potato Black Bean Tacos",
+        url: "https://cookieandkate.com/sweet-potato-black-bean-tacos/",
+        image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80",
+        source: "Cookie + Kate",
+        tags: ["Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free"]
+      },
+      {
+        title: "Classic Margherita Pizza (GF base)",
+        url: "https://www.jamieoliver.com/recipes/pizza-recipes/gluten-free-pizza/",
+        image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80",
+        source: "Jamie Oliver",
+        tags: ["Vegetarian", "Gluten-Free", "Nut-Free"]
+      },
+      {
+        title: "Coconut Mango Chia Pudding",
+        url: "https://www.thefullhelping.com/mango-coconut-chia-pudding/",
+        image: "https://images.unsplash.com/photo-1546842931-886c185b4c8c?w=600&q=80",
+        source: "The Full Helping",
+        tags: ["Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free"]
+      },
+      {
+        title: "Beef Kofta with Herb Salad",
+        url: "https://www.seriouseats.com/turkish-beef-kofta-recipe",
+        image: "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600&q=80",
+        source: "Serious Eats",
+        tags: ["Halal", "Gluten-Free", "Dairy-Free", "Nut-Free", "Low-Carb"]
+      },
+      {
+        title: "Spinach & Feta Stuffed Peppers",
+        url: "https://www.eatingwell.com/recipe/spinach-feta-stuffed-peppers",
+        image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80",
+        source: "Eating Well",
+        tags: ["Vegetarian", "Gluten-Free", "Nut-Free"]
+      },
+      {
+        title: "Cauliflower Steak with Chimichurri",
+        url: "https://minimalistbaker.com/cauliflower-steak-chimichurri/",
+        image: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=600&q=80",
+        source: "Minimalist Baker",
+        tags: ["Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free", "Low-Carb"]
+      }
+    ];
+
+    /* =================================================================
+       ⚙️  ENGINE — no need to edit below this line
+       ================================================================= */
+
+    // Collect all unique tags from the data
+    const allTags = [...new Set(RECIPES.flatMap(r => r.tags))].sort();
+    let activeTag = "All";
+
+    // Build filter buttons
+    const filterBar = document.getElementById("filterBar");
+    ["All", ...allTags].forEach(tag => {
+      const btn = document.createElement("button");
+      btn.className = "filter-btn" + (tag === "All" ? " active" : "");
+      btn.textContent = tag;
+      btn.addEventListener("click", () => {
+        activeTag = tag;
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderCards();
+      });
+      filterBar.appendChild(btn);
+    });
+
+    // Build recipe cards
+    const grid = document.getElementById("recipeGrid");
+    const emptyState = document.getElementById("emptyState");
+    const resultsBar = document.getElementById("resultsBar");
+
+    RECIPES.forEach(recipe => {
+      const card = document.createElement("a");
+      card.href = recipe.url;
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+      card.className = "recipe-card";
+      card.dataset.tags = recipe.tags.join(",");
+
+      const imgContent = recipe.image
+        ? `<img src="${recipe.image}" alt="${recipe.title}" loading="lazy" />`
+        : `<div class="card-img-placeholder">🌿</div>`;
+
+      const tagsHtml = recipe.tags.map(t => `<span class="tag">${t}</span>`).join("");
+
+      card.innerHTML = `
+        <div class="card-img-wrap">${imgContent}</div>
+        <div class="card-body">
+          <div>
+            <div class="card-title">${recipe.title}</div>
+            <div class="card-source">${recipe.source}</div>
+          </div>
+          <div class="card-tags">${tagsHtml}</div>
+        </div>
+        <div class="card-cta">View Recipe</div>
+      `;
+      grid.appendChild(card);
+    });
+
+    function renderCards() {
+      const cards = document.querySelectorAll(".recipe-card:not(.empty-state)");
+      let visible = 0;
+      cards.forEach((card, i) => {
+        const match = activeTag === "All" || card.dataset.tags.split(",").includes(activeTag);
+        card.classList.remove("hidden", "fade-in");
+        if (match) {
+          card.style.animationDelay = (visible * 40) + "ms";
+          card.classList.add("fade-in");
+          visible++;
+        } else {
+          card.classList.add("hidden");
+        }
+      });
+      emptyState.classList.toggle("visible", visible === 0);
+      resultsBar.textContent = activeTag === "All"
+        ? `Showing all ${visible} recipes`
+        : `${visible} recipe${visible !== 1 ? "s" : ""} tagged "${activeTag}"`;
+    }
+
+    renderCards();
+  </script>
+</body>
+</html>
